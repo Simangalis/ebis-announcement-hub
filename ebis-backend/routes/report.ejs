@@ -1,0 +1,84 @@
+<html>
+  <header>
+    <style>
+      table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      img{
+        display: block;
+        margin: 0 auto;
+      }
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+    </style>
+  </header>
+
+  <body>
+    <h1 style="text-align: center">EBIS Announcement Hub</h1>
+   <hr> 
+    <u><h3>Customer Details</h3></u>
+    <table>
+      <tr>
+        <th>Invoice_Date: <%= invoice_date %></th>
+        <th>Name: <%= name %></th>
+        
+      </tr>
+  
+      <tr>
+        <th>Email: <%= email %></th>
+        <th>Contact Number: <%= contactNumber %></th>
+      </tr>
+    </table>
+    <u><h3>Announcement Details</h3></u>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Content</th>
+          <th>Publication Date</th>
+          <th>Expiry Date</th>
+          <th>Price</th>
+          <th>Sub Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% let total = 0; %>
+        <% if(announcementDetails.length > 0){ %> 
+          <% announcementDetails.forEach(announcement => { %>
+            <% 
+              // Calculate total number of days between publication_date and expiry_date
+              const publicationDate = new Date(announcement.publication_date);
+              const expiryDate = new Date(announcement.expiry_date);
+              const totalDays = Math.floor((expiryDate - publicationDate) / (1000 * 60 * 60 * 24));
+              
+              // Calculate subtotal
+              const subtotal = announcement.Price * totalDays;
+              total += subtotal;
+            %>
+            <tr>
+              <td><%= announcement.title %></td>
+              <td><%= announcement.category %></td>
+              <td><%= announcement.content %></td>
+              <td><%= announcement.publication_date %></td>
+              <td><%= announcement.expiry_date %></td>
+              <td><%= announcement.Price %></td>
+              <td><%= subtotal %></td>
+            </tr>
+          <% }); %>
+        <% } %>
+      </tbody>
+    </table>
+    
+    <h3>Total: <%= total %></h3>    
+
+    <h3>Thank you for publishing your announcement with us...!</h3>
+  </body>
+</html>
